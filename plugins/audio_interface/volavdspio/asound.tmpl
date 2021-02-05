@@ -1,0 +1,11 @@
+
+pcm.avdspin {
+	type avdsp
+	dspprog "~/dummydspcode.bin"
+}
+
+pcm.plugequal1 { 
+ 	type plug
+	slave.pcm "plughw:${hwout},0"
+}
+

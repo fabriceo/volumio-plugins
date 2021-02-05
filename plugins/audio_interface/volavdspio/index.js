@@ -18,6 +18,11 @@ function volavdspio(context) {
 
 }
 
+volavdspio.prototype.setreboot = function () {
+  const self = this;
+  
+    socket.emit('reboot');
+};
 
 
 volavdspio.prototype.onVolumioStart = function()
@@ -101,6 +106,68 @@ volavdspio.prototype.setConf = function(varName, varValue) {
 	//Perform your installation tasks here
 };
 
+//here we save thevolumio config for the next plugin start
+volavdspio.prototype.saveVolumioconfig = function () {
+    var self = this;
+
+    return new Promise(function (resolve, reject) {
+
+      var cp = execSync('/bin/cp /data/configuration/audio_interface/alsa_controller/config.json /tmp/vconfig.json');
+      var cp2 = execSync('/bin/cp /data/configuration/system_controller/i2s_dacs/config.json /tmp/i2sconfig.json');
+      try {
+        var cp3 = execSync('/bin/cp /boot/config.txt /tmp/config.txt');
+      } catch (err) {
+        self.logger.info('config.txt does not exist');
+      }
+      resolve();
+    });
+  };
+
+//here we define the volumio restore config
+volavdspio.prototype.restoreVolumioconfig = function () {
+    var self = this;
+    var defer = libQ.defer();
+    //return new Promise(function(resolve, reject) {
+    setTimeout(function () {
+      var cp = execSync('/bin/cp /tmp/vconfig.json /data/configuration/audio_interface/alsa_controller/config.json');
+      var cp2 = execSync('/bin/cp /tmp/i2sconfig.json /data/configuration/system_controller/i2s_dacs/config.json');
+      try {
+        var cp3 = execSync('/bin/cp /tmp/config.txt /boot/config.txt');
+      } catch (err) {
+        self.logger.info('config.txt does not exist');
+      }
+    }, 8000)
+    defer.resolve()
+    return defer.promise;
+  };
+
+//here we define functions used when autoconf is called
+volavdspio.prototype.autoconfig = function () {
+  var self = this;
+  var defer = libQ.defer();
+  self.saveVolumioconfig()
+    //.then(self.modprobeLoopBackDevice())
+    //.then(self.createASOUNDFile())
+    //.then(self.saveHardwareAudioParameters())
+    //.then(self.setalsaequaloutput())
+    //  .then(self.setVolumeParameters())
+    //  .then(self.restoreVolumioconfig())
+    //  .then(self.bridgeLoopBackequal())
+    .catch(function (err) {
+      console.log(err);
+    });
+  defer.resolve()
+  return defer.promise;
+};
+
+volavdspio.prototype.getLabelForSelect = function (options, key) {
+  var n = options.length;
+  for (var i = 0; i < n; i++) {
+    if (options[i].value == key)
+      return options[i].label;
+  }
+  return 'VALUE NOT FOUND BETWEEN SELECT OPTIONS!';
+};
 
 
 // Playback Controls ---------------------------------------------------------------------------------------

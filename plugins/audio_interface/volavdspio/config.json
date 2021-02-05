@@ -1,3 +1,11 @@
 {
- 
+"mypreset1":{"type":"string","value": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0"},
+"mypreset2":{"type":"string","value": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0"},
+"mypreset3":{"type":"string","value": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0"},
+"flat":{"type":"string","value": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0"},
+"eqpresetsaved":{"type":"string","value":"mypreset1"},
+"alsa_device":{"type": "string","value": "0"},
+"alsa_outputdevicename":{"type": "string","value": "0"},
+"alsa_mixer":{"type": "string","value": ""},
+"alsa_mixer_type":{"type": "string","value": ""}
 }

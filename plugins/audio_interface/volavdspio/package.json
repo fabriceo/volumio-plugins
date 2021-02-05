@@ -1,7 +1,7 @@
 {
 	"name": "volavdspio",
-	"version": "1.0.0",
-	"description": "Volumio plugin to process audio trough AVDSP audio virtual dsp framework, enabling sound correction and multichannel crossover, multi rate without resampling",
+	"version": "0.1.0",
+	"description": "Process audio trough AVDSP audio virtual dsp framework, enabling sound correction and multichannel crossover, multi rate without resampling",
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
