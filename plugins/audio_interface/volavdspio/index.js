@@ -24,7 +24,8 @@ volavdspio.prototype.setreboot = function () {
     socket.emit('reboot');
 };
 
-
+//This is the code that gets executed when Volumio starts and triggers the plugin start. 
+//Typically, what you do is load the plugin configuration.
 volavdspio.prototype.onVolumioStart = function()
 {
 	var self = this;
@@ -36,6 +37,9 @@ volavdspio.prototype.onVolumioStart = function()
     return libQ.resolve();
 }
 
+
+//This instead is what happens when the Plugin starts. 
+//It's different from On Volumio Start since this function is triggered only if the plugin is enabled. 
 volavdspio.prototype.onStart = function() {
     var self = this;
 	var defer=libQ.defer();
@@ -47,6 +51,7 @@ volavdspio.prototype.onStart = function() {
     return defer.promise;
 };
 
+//When a plugin is stopped, this function gets executed.
 volavdspio.prototype.onStop = function() {
     var self = this;
     var defer=libQ.defer();
@@ -65,6 +70,12 @@ volavdspio.prototype.onRestart = function() {
 
 // Configuration Methods -----------------------------------------------------------------------------
 
+//Very straightforwarding, we load the .json configuration file for this plugin.
+volavdspio.prototype.getConfigurationFiles = function() {
+	return ['config.json'];
+}
+
+//This function is triggered when we want to access the plugin configuration
 volavdspio.prototype.getUIConfig = function() {
     var defer = libQ.defer();
     var self = this;
@@ -77,8 +88,13 @@ volavdspio.prototype.getUIConfig = function() {
         .then(function(uiconf)
         {
 
-
-            defer.resolve(uiconf);
+          //we're simply subsituting the first element's value of the first section with the username value 
+          //taken from the plugins configuration. That's how we can populate the UI Configuration Page with actual values.
+          //uiconf.sections[0].content[0].value = self.config.get('username');
+          //uiconf.sections[0].content[1].value = self.config.get('password');
+          //uiconf.sections[0].content[2].value = self.config.get('bitrate');
+            
+          defer.resolve(uiconf);
         })
         .fail(function()
         {
@@ -88,9 +104,18 @@ volavdspio.prototype.getUIConfig = function() {
     return defer.promise;
 };
 
-volavdspio.prototype.getConfigurationFiles = function() {
-	return ['config.json'];
+//
+volavdspio.prototype.getAdditionalConf = function (type, controller, data) {
+  var self = this;
+  //allow us to execute any method on any plugin
+  return self.commandRouter.executeOnPlugin(type, controller, 'getConfigParam', data);
 }
+
+volavdspio.prototype.setAdditionalConf = function (type, controller, data) {
+  var self = this;
+  return self.commandRouter.executeOnPlugin(type, controller, 'setConfigParam', data);
+};
+
 
 volavdspio.prototype.setUIConfig = function(data) {
 	var self = this;
@@ -167,16 +192,6 @@ volavdspio.prototype.getLabelForSelect = function (options, key) {
   return 'VALUE NOT FOUND BETWEEN SELECT OPTIONS!';
 };
 
-volavdspio.prototype.setAdditionalConf = function (type, controller, data) {
-  var self = this;
-  return self.commandRouter.executeOnPlugin(type, controller, 'setConfigParam', data);
-};
-
-volavdspio.prototype.getAdditionalConf = function (type, controller, data) {
-  var self = this;
-  return self.commandRouter.executeOnPlugin(type, controller, 'getConfigParam', data);
-}
-
 
 volavdspio.prototype.outputDeviceCallback = function () {
   var self = this;
@@ -192,8 +207,10 @@ volavdspio.prototype.outputDeviceCallback = function () {
 volavdspio.prototype.setalsaoutput = function () {
   var self = this;
   var defer = libQ.defer();
-  var outputp
-  outputp = self.config.get('alsa_outputdevicename')
+  var outputp;
+  outputp = self.getAdditionalConf('audio_interface', 'alsa_controller', 'outputdevicename');
+  //self.config.set('alsa_outputdevicename', conf);
+  //outputp = self.config.get('alsa_outputdevicename')
   setTimeout(function () {
     var stri = {
       "output_device": {
@@ -214,11 +231,14 @@ volavdspio.prototype.saveequalizerpreset = function (data) {
 
   self.config.set('eqpresetsaved', data['eqpresetsaved'].value);
 
-  self.logger.info('Equalizer preset saved');
+  self.logger.info('dspcode preset saved');
   self.commandRouter.pushToastMessage('success', self.commandRouter.getI18nString('COMMON.CONFIGURATION_UPDATE_DESCRIPTION'));
 
   return defer.promise;
 };
+
+
+
 
 
 // Playback Controls ---------------------------------------------------------------------------------------

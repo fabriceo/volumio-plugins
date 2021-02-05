@@ -14,12 +14,32 @@
 				"method": "saveequalizerpreset"
 			},
 			"saveButton": {
-				"label": "save",
+				"label": "TRANSLATE.SAVE",
 				"data": [
+					"onoff",
+					"alsadevice",
 					"eqpresetsaved"
 				]
 			},
 			"content": [
+				{
+					"id": "onoff",
+					"element": "switch",
+					"label": "dsp state",
+					"description":"dsp on / off",
+					"value": "false"
+				  },
+				{
+					"id": "alsadevice",
+					"type":"text",
+					"element": "input",
+					"doc": "This is the name of the alsa device describing avdsp plugin",
+					"label": "alsa device name",
+					"attributes": [
+						{"placeholder": "avdspin"}, {"maxlength": 20}
+					  ],
+					"value": ""
+				  },
 				{
 					"id": "eqpresetsaved",
 					"element": "select",
