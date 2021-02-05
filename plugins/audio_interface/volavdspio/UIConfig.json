@@ -3,5 +3,48 @@
     "label": "TRANSLATE.PLUGIN_CONFIGURATION"
   },
   "sections": [
+    {
+			"id": "advanced",
+			"element": "section",
+			"label": "TRANSLATE.ADVEQSET",
+			"icon": "fa-cogs",
+			"onSave": {
+				"type": "plugin",
+				"endpoint": "audio_interface/volavdspio",
+				"method": "saveequalizerpreset"
+			},
+			"saveButton": {
+				"label": "save",
+				"data": [
+					"eqpresetsaved"
+				]
+			},
+			"content": [
+				{
+					"id": "eqpresetsaved",
+					"element": "select",
+					"doc": "TRANSLATE.DOCSAVECURRENTEQ",
+					"label": "TRANSLATE.SAVECURRENTEQ",
+					"value": {
+						"value": "",
+						"label": ""
+					},
+					"options": [
+						{
+							"value": "mypreset1",
+							"label": "TRANSLATE.LABELPS1"
+						},
+						{
+							"value": "mypreset2",
+							"label": "TRANSLATE.LABELPS2"
+						},
+						{
+							"value": "mypreset3",
+							"label": "TRANSLATE.LABELPS3"
+						}
+					]
+				}
+			]
+		}
   ]
 }

@@ -29,7 +29,8 @@ volavdspio.prototype.onVolumioStart = function()
 {
 	var self = this;
 	var configFile=this.commandRouter.pluginManager.getConfigurationFile(this.context,'config.json');
-	this.config = new (require('v-conf'))();
+  this.commandRouter.sharedVars.registerCallback('alsa.outputdevice', this.outputDeviceCallback.bind(this));
+  this.config = new (require('v-conf'))();
 	this.config.loadFile(configFile);
 
     return libQ.resolve();
@@ -146,13 +147,10 @@ volavdspio.prototype.autoconfig = function () {
   var self = this;
   var defer = libQ.defer();
   self.saveVolumioconfig()
-    //.then(self.modprobeLoopBackDevice())
     //.then(self.createASOUNDFile())
     //.then(self.saveHardwareAudioParameters())
-    //.then(self.setalsaequaloutput())
-    //  .then(self.setVolumeParameters())
+    .then(self.setalsaoutput())
     //  .then(self.restoreVolumioconfig())
-    //  .then(self.bridgeLoopBackequal())
     .catch(function (err) {
       console.log(err);
     });
@@ -167,6 +165,59 @@ volavdspio.prototype.getLabelForSelect = function (options, key) {
       return options[i].label;
   }
   return 'VALUE NOT FOUND BETWEEN SELECT OPTIONS!';
+};
+
+volavdspio.prototype.setAdditionalConf = function (type, controller, data) {
+  var self = this;
+  return self.commandRouter.executeOnPlugin(type, controller, 'setConfigParam', data);
+};
+
+volavdspio.prototype.getAdditionalConf = function (type, controller, data) {
+  var self = this;
+  return self.commandRouter.executeOnPlugin(type, controller, 'getConfigParam', data);
+}
+
+
+volavdspio.prototype.outputDeviceCallback = function () {
+  var self = this;
+  var defer = libQ.defer();
+  self.context.coreCommand.pushConsoleMessage('Output device has changed, continuing config');
+  //self.setVolumeParameters()
+  //self.restoreVolumioconfig()
+
+  defer.resolve()
+  return defer.promise;
+};
+
+volavdspio.prototype.setalsaoutput = function () {
+  var self = this;
+  var defer = libQ.defer();
+  var outputp
+  outputp = self.config.get('alsa_outputdevicename')
+  setTimeout(function () {
+    var stri = {
+      "output_device": {
+        "value": "avdspin",
+        "label": ('avdsp -> ' + outputp)
+      }
+    }
+    self.commandRouter.executeOnPlugin('system_controller', 'i2s_dacs', 'disableI2SDAC', '');
+    return self.commandRouter.executeOnPlugin('audio_interface', 'alsa_controller', 'saveAlsaOptions', stri);
+  }, 4500);
+  // return defer.promise;
+};
+
+//here we save the equalizer preset
+volavdspio.prototype.saveequalizerpreset = function (data) {
+  var self = this;
+  var defer = libQ.defer();
+
+  self.config.set('eqpresetsaved', data['eqpresetsaved'].value);
+
+  self.logger.info('Equalizer preset saved');
+  self.commandRouter.pushToastMessage('success', self.commandRouter.getI18nString('COMMON.CONFIGURATION_UPDATE_DESCRIPTION'));
+
+  return defer.promise;
 };
 
 

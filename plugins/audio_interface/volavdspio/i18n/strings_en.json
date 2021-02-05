@@ -1,4 +1,14 @@
 {
   "PLUGIN_CONFIGURATION":"Example Plugin Configuration",
-  "SAVE":"Save"
+ "APPLY":"Apply",
+ "LABELPS1":"my preset 1",
+ "LABELPS2":"my preset 2",
+ "LABELPS3":"my preset 3",
+ "TOASTSUCCESSAPPLY":"New equalizer successfully applied",
+ "ADVEQSET":"Advanced equalizer preset",
+ "SAVECURRENTEQ": "Save current Equalizer in :",
+ "DOCSAVECURRENTEQ": "Save current Equalizer to create your own custom preset",
+ "REBOOT_TITLE" : "Reboot Needed",
+ "REBOOT" : "You have to reboot or you may experience no sound or anormal sound",
+ "SAVE":"Save"
 }
