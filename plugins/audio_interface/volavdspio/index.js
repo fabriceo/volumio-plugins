@@ -90,9 +90,9 @@ volavdspio.prototype.getUIConfig = function() {
 
           //we're simply subsituting the first element's value of the first section with the username value 
           //taken from the plugins configuration. That's how we can populate the UI Configuration Page with actual values.
-          //uiconf.sections[0].content[0].value = self.config.get('username');
-          //uiconf.sections[0].content[1].value = self.config.get('password');
-          //uiconf.sections[0].content[2].value = self.config.get('bitrate');
+          uiconf.sections[0].content[0].value = self.config.get('dsp_state');
+          uiconf.sections[0].content[1].value = self.config.get('alsa_device');
+          uiconf.sections[0].content[2].value = self.config.get('dsp_preset_saved');
             
           defer.resolve(uiconf);
         })
@@ -225,13 +225,16 @@ volavdspio.prototype.setalsaoutput = function () {
 };
 
 //here we save the equalizer preset
-volavdspio.prototype.saveequalizerpreset = function (data) {
+volavdspio.prototype.saveavdsppreset = function (data) {
   var self = this;
   var defer = libQ.defer();
 
   self.config.set('eqpresetsaved', data['eqpresetsaved'].value);
+  self.config.set('dsp_state', data['onoff'].value);
+  self.config.set('alsa_device', data['alsadevice'].value);
+  self.config.set('dsp_preset_saved', data['dsppresetsaved'].value);
 
-  self.logger.info('dspcode preset saved');
+  self.logger.info('AVDSP config saved');
   self.commandRouter.pushToastMessage('success', self.commandRouter.getI18nString('COMMON.CONFIGURATION_UPDATE_DESCRIPTION'));
 
   return defer.promise;

@@ -11,14 +11,14 @@
 			"onSave": {
 				"type": "plugin",
 				"endpoint": "audio_interface/volavdspio",
-				"method": "saveequalizerpreset"
+				"method": "saveavdsppreset"
 			},
 			"saveButton": {
 				"label": "TRANSLATE.SAVE",
 				"data": [
 					"onoff",
 					"alsadevice",
-					"eqpresetsaved"
+					"dsppresetsaved"
 				]
 			},
 			"content": [
@@ -41,7 +41,7 @@
 					"value": ""
 				  },
 				{
-					"id": "eqpresetsaved",
+					"id": "dsppresetsaved",
 					"element": "select",
 					"doc": "TRANSLATE.DOCSAVECURRENTEQ",
 					"label": "TRANSLATE.SAVECURRENTEQ",
