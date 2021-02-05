@@ -26,18 +26,16 @@
 					"id": "onoff",
 					"element": "switch",
 					"label": "dsp state",
-					"description":"dsp on / off",
+					"description":"dsp activate On or Off",
 					"value": "false"
 				  },
 				{
 					"id": "alsadevice",
 					"type":"text",
 					"element": "input",
-					"doc": "This is the name of the alsa device describing avdsp plugin",
+					"doc": "This is the name of the alsa device describing avdsp plugin as define as pcm.xx in the /etc/asound.conf file",
 					"label": "alsa device name",
-					"attributes": [
-						{"placeholder": "avdspin"}, {"maxlength": 20}
-					  ],
+					"attributes": [ {"placeholder": "avdspin"}, {"maxlength": 20} ],
 					"value": ""
 				  },
 				{

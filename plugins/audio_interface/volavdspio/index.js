@@ -229,7 +229,6 @@ volavdspio.prototype.saveavdsppreset = function (data) {
   var self = this;
   var defer = libQ.defer();
 
-  self.config.set('eqpresetsaved', data['eqpresetsaved'].value);
   self.config.set('dsp_state', data['onoff'].value);
   self.config.set('alsa_device', data['alsadevice'].value);
   self.config.set('dsp_preset_saved', data['dsppresetsaved'].value);

@@ -2,7 +2,7 @@
 "mypreset1":{"type":"string","value": "file1.bin"},
 "mypreset2":{"type":"string","value": "file2.bin"},
 "mypreset3":{"type":"string","value": "file3.bin"},
-"eqpresetsaved":{"type":"string","value":"mypreset1"},
-"alsa_device":{"type": "string","value": "0"},
-"alsa_outputdevicename":{"type": "string","value": "0"}
+"dsp_state":{"type": "string","value": "true"},
+"alsa_device":{"type": "string","value": "avdspin2"},
+"dsp_preset_saved":{"type":"string","value":"mypreset2"}
 }
