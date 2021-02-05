@@ -1,0 +1,21 @@
+{
+	"name": "volavdspio",
+	"version": "1.0.0",
+	"description": "Volumio plugin to process audio trough AVDSP audio virtual dsp framework, enabling sound correction and multichannel crossover, multi rate without resampling",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "fabriceo",
+	"license": "ISC",
+	"volumio_info": {
+		"prettyName": "volavdspio",
+		"icon": "fa-lightbulb-o",
+		"plugin_type": "audio_interface"
+	},
+	"dependencies": {
+		"fs-extra": "^0.28.0",
+		"kew": "^0.7.0",
+		"v-conf": "^1.4.0"
+	}
+}
