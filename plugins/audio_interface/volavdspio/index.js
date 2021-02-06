@@ -242,7 +242,8 @@ volavdspio.prototype.outputDeviceCallback = function () {
   self.context.coreCommand.pushConsoleMessage('Output device has changed, continuing config');
   //self.setVolumeParameters()
   //self.restoreVolumioconfig()
-  self.commandRouter.pushToastMessage('success', 'CARD CHANGED!!!');
+  outputp = self.getAdditionalConf('audio_interface', 'alsa_controller', 'outputdevicename');
+  self.commandRouter.pushToastMessage('success', 'CARD CHANGED!!!'+outputp);
 
 
   defer.resolve()
@@ -277,9 +278,10 @@ volavdspio.prototype.saveavdsppreset = function (data) {
   self.config.set('dsp_state', data['onoff'].value);
   self.config.set('alsa_device', data['alsadevice'].value);
   self.config.set('dsp_preset_saved', data['dsppresetsaved'].value);
+  self.config.set('dsp_card', data['dspcard'].value);
 
   self.logger.info('AVDSP config saved');
-  self.commandRouter.pushToastMessage('success', self.commandRouter.getI18nString('COMMON.CONFIGURATION_UPDATE_DESCRIPTION'));
+  self.commandRouter.pushToastMessage('success', 'bizarre');
 
   return defer.promise;
 };
