@@ -242,7 +242,7 @@ volavdspio.prototype.outputDeviceCallback = function () {
   self.context.coreCommand.pushConsoleMessage('Output device has changed, continuing config');
   //self.setVolumeParameters()
   //self.restoreVolumioconfig()
-  outputp = self.getAdditionalConf('audio_interface', 'alsa_controller', 'outputdevicename');
+  var outputp = self.getAdditionalConf('audio_interface', 'alsa_controller', 'outputdevicename');
   self.commandRouter.pushToastMessage('success', 'CARD CHANGED!!!'+outputp);
 
 
