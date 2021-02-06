@@ -88,11 +88,19 @@ volavdspio.prototype.getUIConfig = function() {
         .then(function(uiconf)
         {
 
+          var cards = self.getAlsaCards();
           //we're simply subsituting the first element's value of the first section with the username value 
           //taken from the plugins configuration. That's how we can populate the UI Configuration Page with actual values.
           uiconf.sections[0].content[0].value = self.config.get('dsp_state');
           uiconf.sections[0].content[1].value = self.config.get('alsa_device');
           uiconf.sections[0].content[2].value = self.config.get('dsp_preset_saved');
+          uiconf.sections[0].content[3].value = "cheese";//self.config.get('dsp_card');
+          for (var i in cards) {
+            self.configManager.pushUIConfigParam(uiconf, 'sections[0].content[3].options', {
+              value: cards[i].id,
+              label: cards[i].name
+            });
+          }
             
           defer.resolve(uiconf);
         })
@@ -131,6 +139,41 @@ volavdspio.prototype.setConf = function(varName, varValue) {
 	var self = this;
 	//Perform your installation tasks here
 };
+
+
+volavdspio.prototype.getAlsaCards = function () {
+	var cards = [];
+
+	var soundCardDir = '/proc/asound/';
+	var idFile = '/id';
+	var regex = /card(\d+)/;
+	var carddata = fs.readJsonSync(('/volumio/app/plugins/audio_interface/alsa_controller/cards.json'),  'utf8', {throws: false});
+
+	var soundFiles = fs.readdirSync(soundCardDir);
+
+	for (var i = 0; i < soundFiles.length; i++) {
+		var fileName = soundFiles[i];
+		var matches = regex.exec(fileName);
+		var idFileName = soundCardDir + fileName + idFile;
+		if (matches && fs.existsSync(idFileName)) {
+			var id = matches[1];
+			var content = fs.readFileSync(idFileName);
+			var rawname = content.toString().trim();
+			var name = rawname;
+			for (var n = 0; n < carddata.cards.length; n++){
+				var cardname = carddata.cards[n].name.toString().trim();
+				if (cardname === rawname){
+					var name = carddata.cards[n].prettyname;
+				}
+			} cards.push({id: id, name: name});
+
+		}
+	}
+
+	return cards;
+};
+
+
 
 //here we save thevolumio config for the next plugin start
 volavdspio.prototype.saveVolumioconfig = function () {
@@ -199,6 +242,8 @@ volavdspio.prototype.outputDeviceCallback = function () {
   self.context.coreCommand.pushConsoleMessage('Output device has changed, continuing config');
   //self.setVolumeParameters()
   //self.restoreVolumioconfig()
+  self.commandRouter.pushToastMessage('success', 'CARD CHANGED!!!');
+
 
   defer.resolve()
   return defer.promise;

@@ -1,8 +1,9 @@
 {
-"mypreset1":{"type":"string","value": "file1.bin"},
-"mypreset2":{"type":"string","value": "file2.bin"},
-"mypreset3":{"type":"string","value": "file3.bin"},
-"dsp_state":{"type": "string","value": "true"},
-"alsa_device":{"type": "string","value": "avdspin2"},
-"dsp_preset_saved":{"type":"string","value":"mypreset2"}
+"mypreset1":{"type":"string","value":"file1.bin"},
+"mypreset2":{"type":"string","value":"file2.bin"},
+"mypreset3":{"type":"string","value":"file3.bin"},
+"dsp_state":{"type":"boolean","value":true },
+"alsa_device":{"type":"string","value":"avdspin2"},
+"dsp_preset_saved":{"type":"string","value":"mypreset2"},
+"dsp_card":{"type":"string","value":""}
 }
